@@ -1,0 +1,148 @@
+"ModelSettings"
+{
+	"Guard 1"
+	{
+		// 2 = Terrorists
+		// 3 = Anti-Terrorists
+		"team"              "3"
+		"model"             "models/player/custom_player/kuristaja/jailbreak/guard1/guard1.mdl"
+		"name"              "Guard 1"
+		"level"             "5"
+		"points"            "200"
+		"expiration"        "0" // 0 - unlimited, otherwise is in time seconds
+		"refundable"        "0"
+                "tradable"          "0"
+	}
+	
+	"Guard 2"
+	{
+		"team"              "3"
+		"model"             "models/player/custom_player/kuristaja/jailbreak/guard2/guard2.mdl"
+		"name"              "Guard 2"
+		"level"             "5"
+		"points"            "200"
+		"expiration"        "0" // 0 - unlimited, otherwise is in time seconds
+		"refundable"        "0"
+                "tradable"          "0"
+	}
+	
+	"Guard 4"
+	{
+		"team"              "3"
+		"model"             "models/player/custom_player/kuristaja/jailbreak/guard4/guard4.mdl"
+		"name"              "Guard 4"
+		"level"             "5"
+		"points"            "200"
+		"expiration"        "0" // 0 - unlimited, otherwise is in time seconds
+		"refundable"        "0"
+                "tradable"          "0"
+	}
+	
+	"Agent 47"
+	{
+		"team"              "3"
+		"model"             "models/player/custom_player/voikanaa/hitman/agent47.mdl"
+		"name"              "Agent 47"
+		"level"             "5"
+		"points"            "200"
+		"expiration"        "0" // 0 - unlimited, otherwise is in time seconds
+		"refundable"        "0"
+                "tradable"          "0"
+	}
+
+	"Jill"
+	{
+		"team"              "3"
+		"model"             "models/player/custom_player/caleon1/re3_jill_cop/re3_jill_cop.mdl"
+		"name"              "Jill"
+		"level"             "5"
+		"points"            "200"
+		"expiration"        "0" // 0 - unlimited, otherwise is in time seconds
+		"refundable"        "0"
+                "tradable"          "0"
+	}
+
+	"Umbrellaforce"
+	{
+		"team"              "3"
+		"model"             "models/player/custom_player/ceylon/cs/zombieforce2/umbrellaforce2.mdl"
+		"name"              "Umbrellaforce"
+		"level"             "5"
+		"points"            "200"
+		"expiration"        "0" // 0 - unlimited, otherwise is in time seconds
+		"refundable"        "0"
+                "tradable"          "0"
+	}
+
+	"Prisoner 1"
+	{
+		"team"              "2"
+		"model"             "models/player/custom_player/kuristaja/jailbreak/prisoner1/prisoner1.mdl"
+		"name"              "Prisoner 1"
+		"level"             "5"
+		"points"            "200"
+		"expiration"        "0" // 0 - unlimited, otherwise is in time seconds
+		"refundable"        "0"
+                "tradable"          "0"
+	}
+
+	"Prisoner 2"
+	{
+		"team"              "2"
+		"model"             "models/player/custom_player/kuristaja/jailbreak/prisoner2/prisoner2.mdl"
+		"name"              "Prisoner 2"
+		"level"             "5"
+		"points"            "200"
+		"expiration"        "0" // 0 - unlimited, otherwise is in time seconds
+		"refundable"        "0"
+                "tradable"          "0"
+	}
+
+	"Prisoner 5"
+	{
+		"team"              "2"
+		"model"             "models/player/custom_player/kuristaja/jailbreak/prisoner5/prisoner5.mdl"
+		"name"              "Prisoner 5"
+		"level"             "5"
+		"points"            "200"
+		"expiration"        "0" // 0 - unlimited, otherwise is in time seconds
+		"refundable"        "0"
+                "tradable"          "0"
+	}
+
+	"Carrie"
+	{
+		"team"              "2"
+		"model"             "models/player/custom_player/kuristaja/cso2/carrie/carrie.mdl"
+		"name"              "Carrie"
+		"level"             "5"
+		"points"            "200"
+		"expiration"        "0" // 0 - unlimited, otherwise is in time seconds
+		"refundable"        "0"
+                "tradable"          "0"
+	}
+
+	"Karachenko"
+	{
+		"team"              "2"
+		"model"             "models/player/custom_player/kuristaja/cso2/karachenko/karachenko.mdl"
+		"name"              "Karachenko"
+		"level"             "5"
+		"points"            "200"
+		"expiration"        "0" // 0 - unlimited, otherwise is in time seconds
+		"refundable"        "0"
+                "tradable"          "0"
+	}
+
+	"Umbrella Leet"
+	{
+		"team"              "2"
+		"model"             "models/player/custom_player/kirby/umbrella_leet/umbrella_leet3.mdl"
+		"name"              "Umbrella Leet"
+		"level"             "5"
+		"points"            "200"
+		"expiration"        "0" // 0 - unlimited, otherwise is in time seconds
+		"refundable"        "0"
+                "tradable"          "0"
+	}
+}

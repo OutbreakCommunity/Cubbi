@@ -1,0 +1,80 @@
+name: Compile with SourceMod
+
+on: 
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '53 05 01 */3 *' # Artifacts expire every 3 months
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        SM_VERSION: [ '1.11' ]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get branch name
+        shell: bash
+        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
+        id: get_branch_name
+
+      - name: Set environment variables
+        run: |
+          git fetch --unshallow
+          echo "COMMIT=$(git rev-list --count HEAD)" >> $GITHUB_ENV
+          echo "SHORT_SHA=$(git describe --always --long --dirty)" >> $GITHUB_ENV
+
+          SOURCEMOD_PATH=$GITHUB_WORKSPACE/addons/sourcemod
+          echo "DATE_TIME=$(date +'%c')" >> $GITHUB_ENV
+          echo "SOURCEMOD_PATH=$SOURCEMOD_PATH" >> $GITHUB_ENV
+          echo "PLUGINS_PATH=$SOURCEMOD_PATH/plugins" >> $GITHUB_ENV
+          echo "GAMEDATA_PATH=$SOURCEMOD_PATH/gamedata" >> $GITHUB_ENV
+          echo "SCRIPTING_PATH=$SOURCEMOD_PATH/scripting" >> $GITHUB_ENV
+          echo "TRANSLATIONS_PATH=$SOURCEMOD_PATH/translations" >> $GITHUB_ENV
+
+      - name: Setup SourcePawn Compiler ${{ matrix.SM_VERSION }}
+        uses: rumblefrog/setup-sp@master
+        with:
+          version: ${{ matrix.SM_VERSION }}
+
+      - name: Clone includes repository
+        run: git clone https://${{ secrets.INCLUDES_ACCESS_TOKEN }}@github.com/OutbreakCommunity/Includes.git include
+        working-directory: ${{ env.SCRIPTING_PATH }}
+
+      - name: Set Version
+        run: |
+          sed -i "s/<VERSION>/${{ steps.get_branch_name.outputs.branch }}.${{ env.COMMIT }}.${{ env.SHORT_SHA }}.SM${{ matrix.SM_VERSION }}/g" $SCRIPTING_PATH/include/outbreak.inc
+
+      - name: Compile cubbi core
+        run: |
+          mkdir -p $PLUGINS_PATH
+          for file in *.sp
+          do
+            echo -e "\nCompiling $file..."
+            spcomp -E -w234 -O2 -v2 -i$includePath -i$SCRIPTING_PATH/include -o $PLUGINS_PATH/$file $file
+          done
+        working-directory: ${{ env.SCRIPTING_PATH }}
+      
+      - name: Compile cubbi features
+        run: |
+          mkdir -p $PLUGINS_PATH/cubbi_features
+          for file in cubbi_features/*.sp
+          do
+            echo -e "\nCompiling $file..."
+            spcomp -E -w234 -O2 -v2 -i$includePath -i$SCRIPTING_PATH/include -o $PLUGINS_PATH/$file $file
+          done
+        working-directory: ${{ env.SCRIPTING_PATH }}
+    
+      - name: Compile cubbi stamm plugins
+        run: |
+          mkdir -p $PLUGINS_PATH/cubbi_stamm
+          for file in cubbi_stamm/*.sp
+          do
+            echo -e "\nCompiling $file..."
+            spcomp -E -w234 -O2 -v2 -i$includePath -i$SCRIPTING_PATH/include -o $PLUGINS_PATH/$file $file
+          done
+        working-directory: ${{ env.SCRIPTING_PATH }}
