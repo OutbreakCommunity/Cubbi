@@ -224,11 +224,17 @@ public Action Timer_PlayerTimer(Handle timer, int userid)
         return Plugin_Stop;
     }
 
+    char sHappyHourPoints[12];
+    if (Core.HappyHour)
+    {
+        FormatEx(sHappyHourPoints, sizeof(sHappyHourPoints), "+ %d", Core.HappyHourPoints);
+    }
+
     char sQuery[512];
-    Core.Database.Format(sQuery, sizeof(sQuery), "UPDATE players SET name = \"%N\", points = points + 1, hidden_points = hidden_points + 1 WHERE accountid = %d;", client, GetSteamAccountID(client));
+    Core.Database.Format(sQuery, sizeof(sQuery), "UPDATE players SET name = \"%N\", points = points + 1%s, hidden_points = hidden_points + 1 WHERE accountid = %d;", client, sHappyHourPoints, GetSteamAccountID(client));
     Core.Database.Query(SQL_AddClientPoints, sQuery, GetClientUserId(client));
 
-    Core.Database.Format(sQuery, sizeof(sQuery), "INSERT INTO monthly_players (accountid, month, year, hidden_points) VALUES (%d, %d, %d, 1) ON DUPLICATE KEY UPDATE hidden_points = hidden_points + 1;", GetSteamAccountID(client), Core.Month, Core.Year);
+    Core.Database.Format(sQuery, sizeof(sQuery), "INSERT INTO players_monthly (accountid, month, year, hidden_points) VALUES (%d, %d, %d, 1) ON DUPLICATE KEY UPDATE hidden_points = hidden_points + 1;", GetSteamAccountID(client), Core.Month, Core.Year);
     Core.Database.Query(SQL_AddClientMonthlyPoints, sQuery);
 
     CreateTimer(Core.Interval.FloatValue, Timer_PlayerTimer, userid);
