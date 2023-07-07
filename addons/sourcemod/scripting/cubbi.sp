@@ -12,7 +12,7 @@ enum struct GlobalData {
 
     bool HappyHour;
     int HappyHourTime;
-    int HappyHourFactor;
+    int HappyHourPoints;
 
     bool Loaded;
 
@@ -39,7 +39,7 @@ enum struct GlobalData {
     void ResetHappyHour() {
         this.HappyHour = false;
         this.HappyHourTime = 0;
-        this.HappyHourFactor = 0;
+        this.HappyHourPoints = 0;
     }
 }
 GlobalData Core;
@@ -47,7 +47,7 @@ GlobalData Core;
 enum struct PlayerData {
     bool Loaded;
     bool HappyHourTime;
-    bool HappyHourFactor;
+    bool HappyHourPoints;
 
     int Level;
     int Points;
@@ -66,7 +66,7 @@ enum struct PlayerData {
     void Reset() {
         this.Loaded = false;
         this.HappyHourTime = false;
-        this.HappyHourFactor = false;
+        this.HappyHourPoints = false;
 
         this.Level = 0;
         this.Points = 0;
@@ -417,26 +417,26 @@ public Action OnClientSayCommand(int client, const char[] command, const char[] 
         Core.HappyHourTime = StringToInt(sArgs);
         Player[client].HappyHourTime = false;
 
-        CPrintToChat(client, "Type happy hour %sfactor in percent %sin the chat.", SPECIAL, TEXT);
-        Player[client].HappyHourFactor = true;
+        CPrintToChat(client, "Type happy hour %show much additional points %sin the chat.", SPECIAL, TEXT);
+        Player[client].HappyHourPoints = true;
         
         return Plugin_Handled;
     }
 
-    if (Player[client].HappyHourFactor)
+    if (Player[client].HappyHourPoints)
     {
         if (!IsStringNumeric(sArgs))
         {
             CPrintToChat(client, "Your entered value \"%s%s%s\" was not valid. Process aborted!", SPECIAL, sArgs, TEXT);
 
             Core.ResetHappyHour();
-            Player[client].HappyHourFactor = false;
+            Player[client].HappyHourPoints = false;
 
             return Plugin_Handled;
         }
 
-        Core.HappyHourFactor = StringToInt(sArgs);
-        Player[client].HappyHourFactor = false;
+        Core.HappyHourPoints = StringToInt(sArgs);
+        Player[client].HappyHourPoints = false;
 
         ConfirmHappyHourSettings(client);
         

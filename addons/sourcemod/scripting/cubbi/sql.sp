@@ -498,23 +498,23 @@ public void SQL_CheckHappyHour(Database db, DBResultSet results, const char[] er
         return;
     }
 
-    GetHappyHourFactor();
+    GetHappyHourPoints();
 }
 
-public void SQL_GetHappyHourFactor(Database db, DBResultSet results, const char[] error, any data)
+public void SQL_GetHappyHourPoints(Database db, DBResultSet results, const char[] error, any data)
 {
     if (db == null || strlen(error) > 0)
     {
-        SetFailState("(SQL_GetHappyHourFactor) Fail at Query: %s", error);
+        SetFailState("(SQL_GetHappyHourPoints) Fail at Query: %s", error);
         return;
     }
 
     if (!results.HasResults || results.RowCount != 1 || !results.FetchRow())
     {
-        Core.HappyHourFactor = 0;
+        Core.HappyHourPoints = 0;
     }
     
-    Core.HappyHourFactor = results.FetchInt(0);
+    Core.HappyHourPoints = results.FetchInt(0);
 
     if (!Core.HappyHour)
     {

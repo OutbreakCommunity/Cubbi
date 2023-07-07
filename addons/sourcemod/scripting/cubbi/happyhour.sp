@@ -9,7 +9,7 @@ void ConfirmHappyHourSettings(int client)
     Menu menu = new Menu(Menu_ConfirmHappyHourSettings);
 
     char sTitle[256];
-    FormatEx(sTitle, sizeof(sTitle), "Confirm following settings:\n \nTime: %d minutes\nPercent: %d\n \nStart Happy Hour?");
+    FormatEx(sTitle, sizeof(sTitle), "Confirm following settings:\n \nTime: %d minutes\nAdditional: %d\n \nStart Happy Hour?");
     menu.SetTitle(sTitle);
     menu.AddItem("n", "No");
     menu.AddItem("y", "Yes");
@@ -39,7 +39,7 @@ public int Menu_ConfirmHappyHourSettings(Menu menu, MenuAction action, int clien
             FormatEx(sQuery, sizeof(sQuery), "INSERT INTO settings (key, value) VALUES (happyhour_time, %d) ON DUPLICATE KEY UPDATE value = %d;", Core.HappyHourTime, Core.HappyHourTime);
             Core.Database.Query(SQL_UpdateHappyHour, sQuery, false);
 
-            FormatEx(sQuery, sizeof(sQuery), "INSERT INTO settings (key, value) VALUES (happyhour_factor, %d) ON DUPLICATE KEY UPDATE value = %d;", Core.HappyHourFactor, Core.HappyHourFactor);
+            FormatEx(sQuery, sizeof(sQuery), "INSERT INTO settings (key, value) VALUES (happyhour_points, %d) ON DUPLICATE KEY UPDATE value = %d;", Core.HappyHourPoints, Core.HappyHourPoints);
             Core.Database.Query(SQL_UpdateHappyHour, sQuery, true);
         }
     }
@@ -58,11 +58,11 @@ void CheckHappyHour()
     Core.Database.Query(SQL_CheckHappyHour, sQuery);
 }
 
-void GetHappyHourFactor()
+void GetHappyHourPoints()
 {
     char sQuery[256];
-    FormatEx(sQuery, sizeof(sQuery), "SELECT value FROM settings WHERE key = \"happyhour_factor\"");
-    Core.Database.Query(SQL_GetHappyHourFactor, sQuery);
+    FormatEx(sQuery, sizeof(sQuery), "SELECT value FROM settings WHERE key = \"happyhour_points\"");
+    Core.Database.Query(SQL_GetHappyHourPoints, sQuery);
 }
 
 void ResetHappyHour()
@@ -72,6 +72,6 @@ void ResetHappyHour()
     FormatEx(sQuery, sizeof(sQuery), "UPDATE settings SET value = 0 WHERE key = \"happyhour_time\"");
     Core.Database.Query(SQL_ResetHappyHour, sQuery, false);
 
-    FormatEx(sQuery, sizeof(sQuery), "UPDATE settings SET value = 0.0 WHERE key = \"happyhour_factor\"");
+    FormatEx(sQuery, sizeof(sQuery), "UPDATE settings SET value = 0.0 WHERE key = \"happyhour_points\"");
     Core.Database.Query(SQL_ResetHappyHour, sQuery, true);
 }
