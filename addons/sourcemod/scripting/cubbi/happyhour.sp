@@ -65,13 +65,13 @@ void GetHappyHourPoints()
     Core.Database.Query(SQL_GetHappyHourPoints, sQuery);
 }
 
-void ResetHappyHour()
+void ResetHappyHour(bool message = false)
 {
     char sQuery[256];
 
     FormatEx(sQuery, sizeof(sQuery), "UPDATE settings SET value = 0 WHERE key = \"happyhour_time\"");
-    Core.Database.Query(SQL_ResetHappyHour, sQuery, false);
+    Core.Database.Query(SQL_ResetHappyHour, sQuery, 0);
 
     FormatEx(sQuery, sizeof(sQuery), "UPDATE settings SET value = 0.0 WHERE key = \"happyhour_points\"");
-    Core.Database.Query(SQL_ResetHappyHour, sQuery, true);
+    Core.Database.Query(SQL_ResetHappyHour, sQuery, (message) ? 2 : 1);
 }

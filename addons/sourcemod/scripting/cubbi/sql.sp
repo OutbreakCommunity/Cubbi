@@ -523,7 +523,7 @@ public void SQL_GetHappyHourPoints(Database db, DBResultSet results, const char[
     }
 }
 
-public void SQL_ResetHappyHour(Database db, DBResultSet results, const char[] error, bool reset)
+public void SQL_ResetHappyHour(Database db, DBResultSet results, const char[] error, int value)
 {
     if (db == null || strlen(error) > 0)
     {
@@ -531,8 +531,13 @@ public void SQL_ResetHappyHour(Database db, DBResultSet results, const char[] er
         return;
     }
 
-    if (reset)
+    if (value > 0)
     {
         Core.ResetHappyHour();
+    }
+
+    if (value == 2)
+    {
+        CPrintToChatAll("Happy Hour has been ended!");
     }
 }

@@ -227,7 +227,15 @@ public Action Timer_PlayerTimer(Handle timer, int userid)
     char sHappyHourPoints[12];
     if (Core.HappyHour)
     {
-        FormatEx(sHappyHourPoints, sizeof(sHappyHourPoints), "+ %d", Core.HappyHourPoints);
+        if (Core.HappyHourTime >= GetTime())
+        {
+            FormatEx(sHappyHourPoints, sizeof(sHappyHourPoints), "+ %d", Core.HappyHourPoints);
+        }
+        else
+        {
+            Core.HappyHour = false;
+            ResetHappyHour(true);
+        }
     }
 
     char sQuery[512];
