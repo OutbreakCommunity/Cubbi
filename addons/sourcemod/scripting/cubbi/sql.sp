@@ -83,7 +83,7 @@ public void SQL_CreatePurchasedFeaturesTable(Database db, DBResultSet results, c
 
     char sQuery[1024];
     Core.Database.Format(sQuery, sizeof(sQuery),
-        "CREATE TABLE IF NOT EXISTS `monthly_players` ( \
+        "CREATE TABLE IF NOT EXISTS `players_monthly` ( \
             `accountid` INT NOT NULL, \
             `month` TINYINT NOT NULL, \
             `year` TINYINT NOT NULL, \
