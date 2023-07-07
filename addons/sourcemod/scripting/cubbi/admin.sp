@@ -16,7 +16,11 @@ public int MenuHandler_AdminMenu(Menu menu, MenuAction action, int client, int p
         char sParam[32];
         menu.GetItem(param, sParam, sizeof(sParam));
 
-        if (sParam[0] == 's' && sParam[2] == 'o')
+        if (sParam[0] == 's' && sParam[2] == 'a')
+        {
+            ConfigureHappyHour(client);
+        }
+        else if (sParam[0] == 's' && sParam[2] == 'o')
         {
             ResetHappyHour();
         }

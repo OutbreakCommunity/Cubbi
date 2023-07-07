@@ -18,7 +18,8 @@ void CreateTables()
     Core.Database.Format(sQuery, sizeof(sQuery),
         "CREATE TABLE IF NOT EXISTS `settings` ( \
             `key` VARCHAR(64) NOT NULL, \
-            `value` VARCHAR(256) NOT NULL \
+            `value` VARCHAR(256) NOT NULL, \
+            PRIMARY KEY (`key`) \
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
     Core.Database.Query(SQL_CreateSettingsTable, sQuery);
 }
@@ -462,6 +463,20 @@ public void SQL_AddRefundLog(Database db, DBResultSet results, const char[] erro
     }
 }
 
+public void SQL_UpdateHappyHour(Database db, DBResultSet results, const char[] error, bool check)
+{
+    if (db == null || strlen(error) > 0)
+    {
+        SetFailState("(SQL_UpdateHappyHour) Fail at Query: %s", error);
+        return;
+    }
+
+    if (check)
+    {
+        CheckHappyHour();
+    }
+}
+
 public void SQL_CheckHappyHour(Database db, DBResultSet results, const char[] error, any data)
 {
     if (db == null || strlen(error) > 0)
@@ -496,10 +511,16 @@ public void SQL_GetHappyHourFactor(Database db, DBResultSet results, const char[
 
     if (!results.HasResults || results.RowCount != 1 || !results.FetchRow())
     {
-        Core.HappyHourFactor = 0.0;
+        Core.HappyHourFactor = 0;
     }
     
-    Core.HappyHourFactor = results.FetchFloat(0);
+    Core.HappyHourFactor = results.FetchInt(0);
+
+    if (!Core.HappyHour)
+    {
+        CPrintToChatAll("Happy Hour has been started!");
+        Core.HappyHour = true;
+    }
 }
 
 public void SQL_ResetHappyHour(Database db, DBResultSet results, const char[] error, bool reset)

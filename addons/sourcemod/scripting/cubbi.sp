@@ -10,8 +10,9 @@ enum struct GlobalData {
     int Month;
     int Year;
 
+    bool HappyHour;
     int HappyHourTime;
-    float HappyHourFactor;
+    int HappyHourFactor;
 
     bool Loaded;
 
@@ -36,8 +37,9 @@ enum struct GlobalData {
     GlobalForward OnClientReady;
 
     void ResetHappyHour() {
+        this.HappyHour = false;
         this.HappyHourTime = 0;
-        this.HappyHourFactor = 0.0;
+        this.HappyHourFactor = 0;
     }
 }
 GlobalData Core;
@@ -391,4 +393,55 @@ void NotifyClientInvalidId(int client)
     {
         KickClient(client, "We couldn't validate your steam account id. Please rejoin the server.");
     }
+}
+
+public Action OnClientSayCommand(int client, const char[] command, const char[] sArgs)
+{
+    if (!client)
+    {
+        return Plugin_Continue;
+    }
+
+    if (Player[client].HappyHourTime)
+    {
+        if (!IsStringNumeric(sArgs))
+        {
+            CPrintToChat(client, "Your entered value \"%s%s%s\" was not valid. Process aborted!", SPECIAL, sArgs, TEXT);
+
+            Core.ResetHappyHour();
+            Player[client].HappyHourTime = false;
+
+            return Plugin_Handled;
+        }
+
+        Core.HappyHourTime = StringToInt(sArgs);
+        Player[client].HappyHourTime = false;
+
+        CPrintToChat(client, "Type happy hour %sfactor in percent %sin the chat.", SPECIAL, TEXT);
+        Player[client].HappyHourFactor = true;
+        
+        return Plugin_Handled;
+    }
+
+    if (Player[client].HappyHourFactor)
+    {
+        if (!IsStringNumeric(sArgs))
+        {
+            CPrintToChat(client, "Your entered value \"%s%s%s\" was not valid. Process aborted!", SPECIAL, sArgs, TEXT);
+
+            Core.ResetHappyHour();
+            Player[client].HappyHourFactor = false;
+
+            return Plugin_Handled;
+        }
+
+        Core.HappyHourFactor = StringToInt(sArgs);
+        Player[client].HappyHourFactor = false;
+
+        ConfirmHappyHourSettings(client);
+        
+        return Plugin_Handled;
+    }
+
+    return Plugin_Continue;
 }
