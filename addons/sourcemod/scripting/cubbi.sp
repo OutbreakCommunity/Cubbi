@@ -10,6 +10,8 @@ enum struct GlobalData {
     int Month;
     int Year;
 
+    int HappyHour;
+
     bool Loaded;
 
     Database Database;
@@ -66,10 +68,12 @@ PlayerData Player[MAXPLAYERS + 1];
 #include "cubbi/sql.sp"
 #include "cubbi/native.sp"
 #include "cubbi/command.sp"
+#include "cubbi/admin.sp"
 #include "cubbi/toplists.sp"
 #include "cubbi/shop.sp"
 #include "cubbi/feature.sp"
 #include "cubbi/refund.sp"
+#include "cubbi/happyhour.sp"
 
 public Plugin myinfo = 
 {
@@ -131,6 +135,8 @@ public void OnPluginStart()
     RegAdminCmd("sm_addpoints", Command_AddPoints, ADMFLAG_GENERIC);
     RegAdminCmd("sm_setpoints", Command_SetPoints, ADMFLAG_GENERIC);
     RegAdminCmd("sm_delpoints", Command_DelPoints, ADMFLAG_GENERIC);
+
+    RegAdminCmd("sm_cadmin", Command_CAdmin, ADMFLAG_ROOT);
 }
 
 public void OnMapStart()

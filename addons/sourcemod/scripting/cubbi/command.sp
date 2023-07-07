@@ -252,3 +252,15 @@ public Action Command_DelPoints(int client, int args)
     }
     return Plugin_Handled;
 }
+
+public Action Command_CAdmin(int client, int args)
+{
+    if (!client)
+    {
+        return Plugin_Handled;
+    }
+
+    ShowAdminMenu(client);
+
+    return Plugin_Handled;
+}

@@ -16,6 +16,23 @@ void CreateTables()
 {
     char sQuery[1024];
     Core.Database.Format(sQuery, sizeof(sQuery),
+        "CREATE TABLE IF NOT EXISTS `settings` ( \
+            `key` VARCHAR(64) NOT NULL, \
+            `value` VARCHAR(256) NOT NULL \
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+    Core.Database.Query(SQL_CreateSettingsTable, sQuery);
+}
+
+public void SQL_CreateSettingsTable(Database db, DBResultSet results, const char[] error, any data)
+{
+    if (db == null || strlen(error) > 0)
+    {
+        SetFailState("(SQL_CreateSettingsTable) Fail at Query: %s", error);
+        return;
+    }
+
+    char sQuery[1024];
+    Core.Database.Format(sQuery, sizeof(sQuery),
         "CREATE TABLE IF NOT EXISTS `players` ( \
             `accountid` INT NOT NULL, \
             `name` VARCHAR(%d) NOT NULL, \
@@ -107,6 +124,7 @@ public void SQL_CreateFeatureLogsTable(Database db, DBResultSet results, const c
     }
 
     LoadLevels();
+    CheckHappyHour();
 }
 
 public void SQL_LoadClient(Database db, DBResultSet results, const char[] error, int userid)
@@ -442,4 +460,36 @@ public void SQL_AddRefundLog(Database db, DBResultSet results, const char[] erro
         SetFailState("(SQL_AddRefundLog) Fail at Query: %s", error);
         return;
     }
+}
+
+public void SQL_CheckHappyHour(Database db, DBResultSet results, const char[] error, int userid)
+{
+    if (db == null || strlen(error) > 0)
+    {
+        SetFailState("(SQL_CheckHappyHour) Fail at Query: %s", error);
+        return;
+    }
+
+    if (!results.HasResults || results.RowCount != 1 || !results.FetchRow())
+    {
+        Core.HappyHour = 0;
+    }
+    
+    Core.HappyHour = results.FetchInt(0);
+
+    if (Core.HappyHour < GetTime())
+    {
+        ResetHappyHour();
+    }
+}
+
+public void SQL_ResetHappyHour(Database db, DBResultSet results, const char[] error, int userid)
+{
+    if (db == null || strlen(error) > 0)
+    {
+        SetFailState("(SQL_ResetHappyHour) Fail at Query: %s", error);
+        return;
+    }
+
+    Core.HappyHour = 0;
 }
