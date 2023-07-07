@@ -444,7 +444,7 @@ public void SQL_LoadClientFeatures(Database db, DBResultSet results, const char[
     Call_Finish();
 }
 
-public void SQL_AddPurchaseLog(Database db, DBResultSet results, const char[] error, int userid)
+public void SQL_AddPurchaseLog(Database db, DBResultSet results, const char[] error, any data)
 {
     if (db == null || strlen(error) > 0)
     {
@@ -453,7 +453,7 @@ public void SQL_AddPurchaseLog(Database db, DBResultSet results, const char[] er
     }
 }
 
-public void SQL_AddRefundLog(Database db, DBResultSet results, const char[] error, int userid)
+public void SQL_AddRefundLog(Database db, DBResultSet results, const char[] error, any data)
 {
     if (db == null || strlen(error) > 0)
     {
@@ -462,7 +462,7 @@ public void SQL_AddRefundLog(Database db, DBResultSet results, const char[] erro
     }
 }
 
-public void SQL_CheckHappyHour(Database db, DBResultSet results, const char[] error, int userid)
+public void SQL_CheckHappyHour(Database db, DBResultSet results, const char[] error, any data)
 {
     if (db == null || strlen(error) > 0)
     {
@@ -472,18 +472,37 @@ public void SQL_CheckHappyHour(Database db, DBResultSet results, const char[] er
 
     if (!results.HasResults || results.RowCount != 1 || !results.FetchRow())
     {
-        Core.HappyHour = 0;
+        Core.HappyHourTime = 0;
     }
     
-    Core.HappyHour = results.FetchInt(0);
+    Core.HappyHourTime = results.FetchInt(0);
 
-    if (Core.HappyHour < GetTime())
+    if (Core.HappyHourTime < GetTime())
     {
         ResetHappyHour();
+        return;
     }
+
+    GetHappyHourFactor();
 }
 
-public void SQL_ResetHappyHour(Database db, DBResultSet results, const char[] error, int userid)
+public void SQL_GetHappyHourFactor(Database db, DBResultSet results, const char[] error, any data)
+{
+    if (db == null || strlen(error) > 0)
+    {
+        SetFailState("(SQL_GetHappyHourFactor) Fail at Query: %s", error);
+        return;
+    }
+
+    if (!results.HasResults || results.RowCount != 1 || !results.FetchRow())
+    {
+        Core.HappyHourFactor = 0.0;
+    }
+    
+    Core.HappyHourFactor = results.FetchFloat(0);
+}
+
+public void SQL_ResetHappyHour(Database db, DBResultSet results, const char[] error, bool reset)
 {
     if (db == null || strlen(error) > 0)
     {
@@ -491,5 +510,8 @@ public void SQL_ResetHappyHour(Database db, DBResultSet results, const char[] er
         return;
     }
 
-    Core.HappyHour = 0;
+    if (reset)
+    {
+        Core.ResetHappyHour();
+    }
 }

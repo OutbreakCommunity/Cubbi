@@ -10,7 +10,8 @@ enum struct GlobalData {
     int Month;
     int Year;
 
-    int HappyHour;
+    int HappyHourTime;
+    float HappyHourFactor;
 
     bool Loaded;
 
@@ -33,11 +34,18 @@ enum struct GlobalData {
     GlobalForward OnLoaded;
     GlobalForward OnPurchase;
     GlobalForward OnClientReady;
+
+    void ResetHappyHour() {
+        this.HappyHourTime = 0;
+        this.HappyHourFactor = 0.0;
+    }
 }
 GlobalData Core;
 
 enum struct PlayerData {
     bool Loaded;
+    bool HappyHourTime;
+    bool HappyHourFactor;
 
     int Level;
     int Points;
@@ -55,6 +63,8 @@ enum struct PlayerData {
 
     void Reset() {
         this.Loaded = false;
+        this.HappyHourTime = false;
+        this.HappyHourFactor = false;
 
         this.Level = 0;
         this.Points = 0;

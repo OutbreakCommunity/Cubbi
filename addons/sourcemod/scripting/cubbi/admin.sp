@@ -3,7 +3,7 @@ void ShowAdminMenu(int client)
     Menu menu = new Menu(MenuHandler_AdminMenu);
     menu.SetTitle("Cubbi Admin Menu");
     menu.AddItem("start_happy", "Start Happy Hour");
-    menu.AddItem("stop_happy", "Stop Happy Hour", (Core.HappyHour != 0) ? ITEMDRAW_DEFAULT : ITEMDRAW_DISABLED);
+    menu.AddItem("stop_happy", "Stop Happy Hour", (Core.HappyHourTime != 0) ? ITEMDRAW_DEFAULT : ITEMDRAW_DISABLED);
     menu.ExitBackButton = false;
     menu.ExitButton = true;
     menu.Display(client, MENU_TIME_FOREVER);
